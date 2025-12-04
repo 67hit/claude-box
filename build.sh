@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-podman build -t claude-box -f Dockerfile
+podman build --format docker -t claude-box . 2>&1 | tee build.log
