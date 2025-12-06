@@ -3,6 +3,7 @@ FROM docker.io/node:current-alpine
 RUN apk add --no-cache zsh
 RUN npm config set os linux
 RUN npm --os=linux install --omit=dev --no-audit --no-fund -g @anthropic-ai/claude-code
+RUN apk add --no-cache python3 py3-pip
 
 RUN apk cache clean
 RUN rm -rf /usr/local/lib/node_modules/npm/man/
