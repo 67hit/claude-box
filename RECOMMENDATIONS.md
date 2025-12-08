@@ -45,9 +45,23 @@ If running long-lived processes, consider adding `dumb-init`:
 ```dockerfile
 RUN apk add --no-cache dumb-init
 ENTRYPOINT ["dumb-init", "--"]
+CMD ["zsh"]
 ```
 
-This ensures proper signal handling and prevents zombie processes.
+#### What is ENTRYPOINT?
+
+`ENTRYPOINT` specifies the main command that runs when a container starts. Unlike `CMD`, which can be overridden by user arguments, `ENTRYPOINT` is the primary executable. Arguments are appended to it.
+
+- `CMD ["zsh"]` — runs `zsh` by default, but `./run.sh ls -la` overrides it to run `ls -la`
+- `ENTRYPOINT ["dumb-init", "--"]` — `dumb-init` always runs as the main process, and `CMD` arguments are passed to it
+
+#### What is dumb-init?
+
+`dumb-init` is a lightweight init system that solves signal handling in containers. When a container receives a signal (like `SIGTERM` from `Ctrl+C` or `podman stop`), it ensures that signal is properly forwarded to child processes. This is especially important for processes that spawn children, preventing "zombie" processes.
+
+#### Is it necessary here?
+
+**Probably not.** You're running an interactive shell (`zsh`), which handles signals fine on its own. `dumb-init` is more critical for background services or long-running processes that spawn many children. This is a "nice-to-have" for robustness but not essential for your use case.
 
 ## Already Implemented ✓
 - ✓ Pinned Node.js version (item 1)
