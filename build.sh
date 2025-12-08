@@ -2,4 +2,6 @@
 
 set -e
 
-podman build --format docker -t claude-box . 2>&1 | tee build.log
+IMAGE=claude-box
+
+podman build --format docker -t "$IMAGE" . 2>&1 | tee build.log
