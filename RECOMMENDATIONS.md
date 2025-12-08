@@ -2,16 +2,6 @@
 
 ## Build & Runtime
 
-### Error Handling in Scripts
-Add `set -e` to both `build.sh` and `run.sh` to fail fast on errors:
-
-```bash
-#!/usr/bin/bash
-set -e
-```
-
-This ensures the script stops immediately if any command fails.
-
 ### Build Script - Container Runtime Flexibility
 Consider making `build.sh` support both `docker` and `podman`:
 
@@ -30,14 +20,6 @@ This allows: `./build.sh` (uses docker by default) or `CONTAINER_RUNTIME=podman 
   This allows `run.sh` to default to zsh if no args provided, or pass through custom commands
 
 ## Nice-to-haves
-
-### Dockerfile Metadata Labels
-Add labels for documentation:
-
-```dockerfile
-LABEL maintainer="your-email@example.com"
-LABEL description="Claude Code in a restricted Podman container"
-```
 
 ### Init System for Signal Handling
 If running long-lived processes, consider adding `dumb-init`:
@@ -68,3 +50,21 @@ CMD ["zsh"]
 - ✓ Removed redundant cache clean (item 3)
 - ✓ Fixed user UID matching (item 4)
 - ✓ Added .dockerignore (item 9)
+
+### Error Handling in Scripts
+Add `set -e` to both `build.sh` and `run.sh` to fail fast on errors:
+
+```bash
+#!/usr/bin/bash
+set -e
+```
+
+This ensures the script stops immediately if any command fails.
+
+### Dockerfile Metadata Labels
+Add labels for documentation:
+
+```dockerfile
+LABEL maintainer="your-email@example.com"
+LABEL description="Claude Code in a restricted Podman container"
+```
