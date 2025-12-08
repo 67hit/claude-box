@@ -1,0 +1,56 @@
+# Improvement Recommendations
+
+## Build & Runtime
+
+### Error Handling in Scripts
+Add `set -e` to both `build.sh` and `run.sh` to fail fast on errors:
+
+```bash
+#!/usr/bin/bash
+set -e
+```
+
+This ensures the script stops immediately if any command fails.
+
+### Build Script - Container Runtime Flexibility
+Consider making `build.sh` support both `docker` and `podman`:
+
+```bash
+${CONTAINER_RUNTIME:-docker} build --format docker -t claude-box . 2>&1 | tee build.log
+```
+
+This allows: `./build.sh` (uses docker by default) or `CONTAINER_RUNTIME=podman ./build.sh`
+
+### Run Script Improvements
+- Add a check that the image exists before running
+- Consider making the shell scriptable with a default fallback:
+  ```bash
+  "$IMAGE" "${@:--zsh}"
+  ```
+  This allows `run.sh` to default to zsh if no args provided, or pass through custom commands
+
+## Nice-to-haves
+
+### Dockerfile Metadata Labels
+Add labels for documentation:
+
+```dockerfile
+LABEL maintainer="your-email@example.com"
+LABEL description="Claude Code in a restricted Podman container"
+```
+
+### Init System for Signal Handling
+If running long-lived processes, consider adding `dumb-init`:
+
+```dockerfile
+RUN apk add --no-cache dumb-init
+ENTRYPOINT ["dumb-init", "--"]
+```
+
+This ensures proper signal handling and prevents zombie processes.
+
+## Already Implemented ✓
+- ✓ Pinned Node.js version (item 1)
+- ✓ Removed redundant cache clean (item 3)
+- ✓ Fixed user UID matching (item 4)
+- ✓ Added .dockerignore (item 9)

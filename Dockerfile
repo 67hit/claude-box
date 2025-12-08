@@ -1,4 +1,6 @@
+
 FROM docker.io/node:23-alpine
+LABEL description="Claude Code in a restricted Podman container"
 
 RUN apk add --no-cache zsh curl jq python3 py3-pip
 
