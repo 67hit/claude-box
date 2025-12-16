@@ -6,9 +6,10 @@ RUN apk add --no-cache zsh curl jq python3 py3-pip
 
 RUN npm config set os linux
 RUN npm install --omit=dev --no-audit --no-fund -g @anthropic-ai/claude-code
+RUN npm install --omit=dev --no-audit --no-fund -g @google/gemini-cli
 RUN rm -rf /usr/local/lib/node_modules/npm/man/
 
-RUN adduser -D -u 1001 claude
+RUN adduser -D -u 1001 agent
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV SHELL=/bin/zsh
