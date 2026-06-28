@@ -1,7 +1,7 @@
 FROM docker.io/node:23-alpine
 LABEL description="Claude Code in a restricted Podman container"
 
-RUN apk add --no-cache zsh curl jq \
+RUN apk add --no-cache bash zsh curl jq \
                         python3 \
                         py3-pip \
                         gcc-arm-none-eabi \
@@ -11,7 +11,7 @@ RUN apk add --no-cache zsh curl jq \
 
 RUN npm config set os linux
 RUN npm install --omit=dev --no-audit --no-fund -g @anthropic-ai/claude-code
-RUN npm install --omit=dev --no-audit --no-fund -g @google/gemini-cli
+# RUN npm install --omit=dev --no-audit --no-fund -g @google/gemini-cli
 RUN rm -rf /usr/local/lib/node_modules/npm/man/
 
 RUN adduser -D -u 1001 agent
