@@ -1,8 +1,13 @@
-
 FROM docker.io/node:23-alpine
 LABEL description="Claude Code in a restricted Podman container"
 
-RUN apk add --no-cache zsh curl jq python3 py3-pip
+RUN apk add --no-cache zsh curl jq \
+                        python3 \
+                        py3-pip \
+                        gcc-arm-none-eabi \
+                        g++-arm-none-eabi \
+                        newlib-arm-none-eabi \
+                        make
 
 RUN npm config set os linux
 RUN npm install --omit=dev --no-audit --no-fund -g @anthropic-ai/claude-code
@@ -15,5 +20,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV SHELL=/bin/zsh
 ENV DISABLE_TELEMETRY=1
 ENV DISABLE_AUTOUPDATER=1
+
+ENV ANTHROPIC_MODEL=claude-opus-4-7
 
 CMD ["zsh"]
